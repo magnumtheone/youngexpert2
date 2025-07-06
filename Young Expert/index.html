@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Young Expert - Développement Web</title>
+    <!-- Tailwind CSS CDN pour les utilitaires de style -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts pour 'Poppins' (titres) et 'Inter' (corps de texte) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Styles personnalisés pour l'intégration avec Tailwind et l'esthétique de base */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Arrière-plan inspiré de l'image fournie (bleu-vert foncé) */
+            background-color: #286676; /* Nouveau fond bleu-vert foncé */
+            color: #F1F5F9; /* Texte clair pour le contraste */
+        }
+        /* Police personnalisée pour les titres pour une hiérarchie visuelle distincte */
+        .font-title {
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Couleur d'accent inspirée de l'image (orange vif) pour les mises en évidence et les appels à l'action */
+        .accent-color { color: #FF8C00; } /* Nouvelle couleur orange vif */
+        .bg-accent-color { background-color: #FF8C00; } /* Nouvelle couleur orange vif */
+        .border-accent-color { border-color: #FF8C00; }
+
+        /* Animation pour les sections qui apparaissent en fondu et glissent vers le haut à l'entrée dans la fenêtre */
+        .section-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Style des boutons principaux avec des effets de survol améliorés */
+        .btn-primary {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            /* Ajout de l'animation de clignotement subtile */
+            animation: pulse-blink 2s infinite ease-in-out; /* Pulsation douce et continue */
+        }
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.02); /* Léger soulèvement et agrandissement */
+            box-shadow: 0 12px 25px rgba(255, 140, 0, 0.3); /* Ombre plus prononcée avec la nouvelle couleur accent */
+            background-color: #E67B00; /* Orange légèrement plus foncé au survol */
+            animation: none; /* Désactive l'animation de clignotement au survol */
+        }
+
+        /* Keyframes pour l'animation de clignotement/pulsation des boutons */
+        @keyframes pulse-blink {
+            0%, 100% {
+                opacity: 1;
+                box-shadow: 0 12px 25px rgba(255, 140, 0, 0.3); /* Nouvelle couleur accent */
+            }
+            50% {
+                opacity: 0.9; /* Légère atténuation */
+                box-shadow: 0 8px 15px rgba(255, 140, 0, 0.15); /* Ombre légèrement réduite avec la nouvelle couleur accent */
+            }
+        }
+
+        /* Barre de défilement personnalisée pour un look plus propre */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1E293B; /* bg-slate-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF8C00; /* Nouvelle couleur accent */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E67B00; /* Accent plus foncé au survol */
+        }
+
+        /* Styles pour le compte à rebours */
+        .countdown-item {
+            /* Utilisation d'une couleur plus foncée pour les cartes pour contraster avec le fond principal */
+            @apply flex flex-col items-center justify-center bg-[#1E4D59] p-4 rounded-lg shadow-lg; /* Nouvelle couleur de fond pour les cartes */
+        }
+        .countdown-number {
+            @apply font-title font-black text-5xl md:text-6xl accent-color;
+        }
+        .countdown-label {
+            @apply text-sm md:text-base text-slate-300 uppercase mt-1;
+        }
+
+        /* Style pour le CTA flottant */
+        #sticky-cta {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            @apply bg-accent-color text-white font-bold py-3 px-6 rounded-full text-lg shadow-xl;
+        }
+        #sticky-cta.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Section d'en-tête : Fixée en haut, navigation réactive -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-[#286676]/80 backdrop-blur-lg border-b border-[#1E4D59]">
+        <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <!-- Logo/Nom de la marque -->
+            <a href="#hero" class="text-2xl font-bold font-title flex items-center gap-2 text-slate-100 hover:text-white transition-colors">
+                <span class="bg-accent-color text-[#286676] font-black text-xl w-8 h-8 flex items-center justify-center rounded-md shadow-md">YE</span>
+                <span>Young Expert</span>
+            </a>
+            <!-- Menu de navigation pour bureau -->
+            <nav class="hidden md:flex space-x-8 items-center">
+                <a href="#formation" class="text-slate-200 hover:text-white transition-colors duration-300">La Formation</a>
+                <a href="#projets" class="text-slate-200 hover:text-white transition-colors duration-300">Projets</a>
+                <a href="#formateurs" class="text-slate-200 hover:text-white transition-colors duration-300">Formateur</a>
+                <a href="#avantages" class="text-slate-200 hover:text-white transition-colors duration-300">Pourquoi nous ?</a>
+                <a href="#temoignages" class="text-slate-200 hover:text-white transition-colors duration-300">Témoignages</a>
+                <a href="#conditions" class="text-slate-200 hover:text-white transition-colors duration-300">Conditions</a>
+                <a href="#prix" class="text-slate-200 hover:text-white transition-colors duration-300">Tarifs</a>
+                <a href="#faq" class="text-slate-200 hover:text-white transition-colors duration-300">FAQ</a>
+            </nav>
+            <!-- Bouton d'appel à l'action pour bureau -->
+            <a href="https://wa.me/243840665620?text=Bonjour%2C%20je%20suis%20int%C3%A9ress%C3%A9(e)%29%20par%20la%20formation%20Young%20Expert%20et%27aimerais%20r%C3%A9server%20ma%20place." target="_blank" class="hidden md:block border-2 border-accent-color text-white font-semibold py-2 px-5 rounded-full hover:bg-accent-color hover:text-white transition-all duration-300 btn-primary">
+                Réserver ma place
+            </a>
+            <!-- Bouton de menu mobile (icône hamburger) -->
+            <button id="mobile-menu-button" class="md:hidden text-slate-200 hover:text-white focus:outline-none p-2 rounded-md" aria-label="Ouvrir le menu mobile">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- Contenu du menu mobile (caché par défaut, basculé par JS) -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 bg-[#286676]/90 border-t border-[#1E4D59]">
+            <nav class="flex flex-col space-y-2">
+                <a href="#formation" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:text-white hover:bg-[#1E4D59] transition-colors">La Formation</a>
+                <a href="#projets" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:text-white hover:bg-[#1E4D59] transition-colors">Projets</a>
+                <a href="#formateurs" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:text-white hover:bg-[#1E4D59] transition-colors">Formateurs</a>
+                <a href="#avantages" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:text-white hover:bg-[#1E4D59] transition-colors">Pourquoi nous ?</a>
+                <a href="#temoignages" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:text-white hover:bg-[#1E4D59] transition-colors">Témoignages</a>
+                <a href="#conditions" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:text-white hover:bg-[#1E4D59] transition-colors">Conditions</a>
+                <a href="#prix" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:text-white hover:bg-[#1E4D59] transition-colors">Tarifs</a>
+                <a href="#faq" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:text-white hover:bg-[#1E4D59] transition-colors">FAQ</a>
+                <a href="https://wa.me/243840665620?text=Bonjour%2C%20je%20suis%20int%C3%A9ress%C3%A9(e)%29%20par%20la%20formation%20Young%20Expert%20et%27aimerais%20r%C3%A9server%20ma%20place." target="_blank" class="mt-4 w-full text-center bg-accent-color text-white font-semibold py-3 px-5 rounded-full btn-primary">Réserver ma place</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6">
+
+        <!-- Section Hero : Titre principal et appel à l'action -->
+        <section id="hero" class="min-h-screen flex items-center text-center pt-24 pb-12">
+            <div class="w-full">
+                <h2 class="font-title font-semibold text-xl md:text-2xl accent-color mb-4 animate-fade-in">Young Expert 2e édition</h2>
+                <!-- Le texte "Devenez Développeur Web." s'affiche maintenant instantanément sans animation -->
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-title font-black tracking-tight text-slate-100 leading-tight">
+                    Devenez Développeur Web.
+                </h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto text-slate-300 mt-6 mb-10 animate-fade-in delay-200">
+                    Apprenez la programmation à créant des sites web modernes et interactifs de A à Z avec notre formation intensive sur HTML, CSS et JavaScript.
+                </p>
+                <a href="https://wa.me/243840665620?text=Bonjour%2C%20je%20suis%20int%C3%A9ress%C3%A9(e)%29%20par%20la%20formation%20Young%20Expert%20et%27aimerais%20r%C3%A9server%20ma%20place." target="_blank" class="btn-primary inline-block bg-accent-color text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg">
+                    Je réserve ma place sur WhatsApp
+                </a>
+            </div>
+        </section>
+
+        <!-- Section Compte à rebours -->
+        <section id="countdown-section" class="py-20 lg:py-28 text-center section-animate">
+            <h2 class="text-4xl md:text-5xl font-title font-bold text-slate-100 mb-8">La formation commence dans :</h2>
+            <div id="countdown-timer" class="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <div class="countdown-item">
+                    <span id="days" class="countdown-number">00</span>
+                    <span class="countdown-label">Jours</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="hours" class="countdown-number">00</span>
+                    <span class="countdown-label">Heures</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="minutes" class="countdown-number">00</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="seconds" class="countdown-number">00</span>
+                    <span class="countdown-label">Secondes</span>
+                </div>
+            </div>
+            <p class="text-lg text-slate-300 mt-8">
+                Ne manquez pas cette opportunité unique ! Les inscriptions se clôturent le <span class="font-bold accent-color">04 Août 2025</span>, date de début de la formation.
+            </p>
+        </section>
+
+        <!-- Section Formation : Détails des modules du cours -->
+        <section id="formation" class="py-20 lg:py-28 section-animate">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-title font-bold text-slate-100">Le Programme de Formation</h2>
+                <p class="text-lg text-slate-300 mt-2">Un aperçu détaillé de ce que vous allez maîtriser.</p>
+            </div>
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Module HTML -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                    <h3 class="text-3xl font-title font-bold mb-3 accent-color flex items-center gap-3">
+                        <svg class="w-8 h-8 accent-color" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 4l-4 4 4 4"></path></svg>
+                        HTML5
+                    </h3>
+                    <details class="mt-4 text-slate-300">
+                        <summary class="cursor-pointer font-semibold text-slate-100 hover:text-white transition-colors flex items-center justify-between">
+                            En savoir plus
+                            <svg class="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </summary>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>Structure sémantique des pages web</li>
+                            <li>Gestion des formulaires et validation</li>
+                            <li>Intégration de médias (images, audio, vidéo)</li>
+                            <li>Accessibilité web (ARIA, sémantique)</li>
+                        </ul>
+                    </details>
+                </div>
+                <!-- Module CSS -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                    <h3 class="text-3xl font-title font-bold mb-3 accent-color flex items-center gap-3">
+                        <svg class="w-8 h-8 accent-color" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        CSS3
+                    </h3>
+                    <details class="mt-4 text-slate-300">
+                        <summary class="cursor-pointer font-semibold text-slate-100 hover:text-white transition-colors flex items-center justify-between">
+                            En savoir plus
+                            <svg class="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </summary>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>Sélecteurs avancés et spécificité</li>
+                            <li>Flexbox pour les mises en page flexibles</li>
+                            <li>CSS Grid pour les grilles complexes</li>
+                            <li>Animations et transitions CSS</li>
+                            <li>Variables CSS et préprocesseurs (introduction)</li>
+                        </ul>
+                    </details>
+                </div>
+                <!-- Module JavaScript -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                    <h3 class="text-3xl font-title font-bold mb-3 accent-color flex items-center gap-3">
+                        <svg class="w-8 h-8 accent-color" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 4l-4 4 4 4"></path></svg>
+                        JavaScript
+                    </h3>
+                    <details class="mt-4 text-slate-300">
+                        <summary class="cursor-pointer font-semibold text-slate-100 hover:text-white transition-colors flex items-center justify-between">
+                            En savoir plus
+                            <svg class="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </summary>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>Bases du langage (variables, types, opérateurs)</li>
+                            <li>Manipulation du DOM (Document Object Model)</li>
+                            <li>Gestion des événements (clics, soumissions)</li>
+                            <li>Requêtes asynchrones (Fetch API, AJAX)</li>
+                            <li>Introduction aux fonctions et objets</li>
+                        </ul>
+                    </details>
+                </div>
+                <!-- Module: Responsive Design -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                    <h3 class="text-3xl font-title font-bold mb-3 accent-color flex items-center gap-3">
+                        <svg class="w-8 h-8 accent-color" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-1.25-3H15l1-1h4.5M3 13.5l1.5-1.5L9 16.5m0 0l4-4m-4 4l-4-4m4 4l-4 4m4 4l4-4m-4 4l-4-4"></path></svg>
+                        Responsive Design
+                    </h3>
+                    <details class="mt-4 text-slate-300">
+                        <summary class="cursor-pointer font-semibold text-slate-100 hover:text-white transition-colors flex items-center justify-between">
+                            En savoir plus
+                            <svg class="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </summary>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>Principes du Mobile-First</li>
+                            <li>Utilisation des Media Queries</li>
+                            <li>Images et vidéos fluides</li>
+                            <li>Typographie adaptative</li>
+                        </ul>
+                    </details>
+                </div>
+                <!-- Module: Déploiement & Bonnes Pratiques -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                    <h3 class="text-3xl font-title font-bold mb-3 accent-color flex items-center gap-3">
+                        <svg class="w-8 h-8 accent-color" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 17l4 4 4-4m-4-5v9m-1-13h6a2 2 0 012 2v8a2 2 0 01-2 2H9a2 2 0 01-2-2V7a2 2 0 012-2z"></path></svg>
+                        Déploiement & Bonnes Pratiques
+                    </h3>
+                    <details class="mt-4 text-slate-300">
+                        <summary class="cursor-pointer font-semibold text-slate-100 hover:text-white transition-colors flex items-center justify-between">
+                            En savoir plus
+                            <svg class="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </summary>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>Hébergement de sites web statiques</li>
+                            <li>Notions de noms de domaine et DNS</li>
+                            <li>Bonnes pratiques de code (propreté, commentaires)</li>
+                            <li>Optimisation des performances web</li>
+                        </ul>
+                    </details>
+                </div>
+                <!-- Module: Outils & Workflow -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                    <h3 class="text-3xl font-title font-bold mb-3 accent-color flex items-center gap-3">
+                        <svg class="w-8 h-8 accent-color" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.282 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Outils & Workflow
+                    </h3>
+                    <details class="mt-4 text-slate-300">
+                        <summary class="cursor-pointer font-semibold text-slate-100 hover:text-white transition-colors flex items-center justify-between">
+                            En savoir plus
+                            <svg class="w-5 h-5 ml-2 transform group-open:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </summary>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>Utilisation d'un éditeur de code (VS Code)</li>
+                            <li>Terminal et ligne de commande (bases)</li>
+                            <li>Introduction à Git et GitHub (contrôle de version)</li>
+                            <li>Débogage avec les outils de développement du navigateur</li>
+                        </ul>
+                    </details>
+                </div>
+            </div>
+            <div class="mt-12 text-center">
+                <p class="text-slate-300 max-w-2xl mx-auto">
+                    Notre programme est conçu pour être pratique et axé sur les projets, vous permettant de construire un portfolio solide dès le début.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section "Ce que vous allez construire" (Projets) -->
+        <section id="projets" class="py-20 lg:py-28 section-animate">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-title font-bold text-slate-100">Ce que vous allez construire</h2>
+                <p class="text-lg text-slate-300 mt-2">Des projets concrets pour un portfolio qui impressionne.</p>
+            </div>
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Projet 1 -->
+                <div class="bg-[#1E4D59] rounded-xl border border-[#143A45] shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+                    <img src="../images/04.png" alt="Maquette de site vitrine" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-title font-bold text-2xl mb-2 text-slate-100">Site Vitrine Professionnel</h3>
+                        <p class="text-slate-300 text-sm">Créez un site web élégant et entièrement responsive pour une entreprise ou un service, en maîtrisant HTML et CSS.</p>
+                    </div>
+                </div>
+                <!-- Projet 2 -->
+                <div class="bg-[#1E4D59] rounded-xl border border-[#143A45] shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+                    <img src="../images/Portfolio.jpg" alt="Maquette de portfolio interactif" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-title font-bold text-2xl mb-2 text-slate-100">Portfolio Interactif Dynamique</h3>
+                        <p class="text-slate-300 text-sm">Développez votre propre portfolio avec des animations et des interactions JavaScript pour présenter vos projets.</p>
+                    </div>
+                </div>
+                <!-- Projet 3 -->
+                <div class="bg-[#1E4D59] rounded-xl border border-[#143A45] shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+                    <img src="../images/Capture d’écran 2025-07-04 145210.png" alt="Maquette de mini-application JavaScript" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-title font-bold text-2xl mb-2 text-slate-100">Mini-Application JavaScript</h3>
+                        <p class="text-slate-300 text-sm">Concevez une petite application web fonctionnelle (calculatrice, to-do list, jeu simple) en utilisant JavaScript pur.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section "Rencontrez vos formateurs" -->
+        <section id="formateurs" class="py-20 lg:py-28 section-animate">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-title font-bold text-slate-100">Rencontrez votre formateur</h2>
+                <p class="text-lg text-slate-300 mt-2">Un expert passionné, dédié à votre réussite.</p>
+            </div>
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Formateur 1 -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                    <img src="../images/ffr.jpg" alt="Photo de profil de Fabrice Antoine" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-accent-color">
+                    <h3 class="font-title font-bold text-2xl mb-2 text-slate-100">David WAWINA (MAGNUM) </h3>
+                    <p class="text-accent-color font-semibold mb-3">Developpeur Full Stack</p>
+                    <p class="text-slate-300 text-sm">Créateur et Fondateur des packs des formations <Span style="color: #FF8C00;">Young Expert éditions</Span>. David est un développeur front-end et Backend chevronné avec plus de 5 ans d'expérience, il maîtrise bon nombre des languages en programmation. Exert en HTML,CSS et JavaScript, Il est passionné par le design responsif et l'accessibilité web, il vous guidera à travers la logique de programmation et les interactions dynamique. David est également un mentor expérimenté qui vous aidera non seulement à coder, mais aussi à maîtriser Git et à préparer votre entrée sur le marché du travail.</p>
+                </div>
+                <!-- Formateur 2 
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                    <img src="https://placehold.co/120x120/FF8C00/FFFFFF?text=L.M." alt="Photo de profil de Laura M'Bala" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-accent-color">
+                    <h3 class="font-title font-bold text-2xl mb-2 text-slate-100">Laura M'Bala</h3>
+                    <p class="text-accent-color font-semibold mb-3">Spécialiste JavaScript</p>
+                    <p class="text-slate-300 text-sm">Laura est une ingénieure logicielle qui excelle en JavaScript.i.</p>sp>
+                </div> -->
+                <!-- Formateur 3 
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                    <img src="https://placehold.co/120x120/FF8C00/FFFFFF?text=D.K." alt="Photo de profil de David Kanga" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-accent-color">
+                    <h3 class="font-title font-bold text-2xl mb-2 text-slate-100">David Kanga</h3>
+                    <p class="text-accent-color font-semibold mb-3">Coach en Carrière & Git</p>
+                    <p class="text-slate-300 text-sm">David est un mentor expérimenté qui vous aidera non seulement à coder, mais aussi à maîtriser Git et à préparer votre entrée sur le marché du travail.</p>
+                </div> -->
+            </div>
+        </section>
+
+        <!-- Section "Pourquoi choisir Young Expert ?" -->
+        <section id="avantages" class="py-20 lg:py-28 section-animate">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-title font-bold text-slate-100">Pourquoi choisir Young Expert ?</h2>
+                <p class="text-lg text-slate-300 mt-2">Des raisons concrètes de nous faire confiance pour votre avenir.</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Avantage 1 : Approche Pratique -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="w-16 h-16 bg-accent-color rounded-full flex items-center justify-center mb-4 shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="font-title font-bold text-xl mb-2 text-slate-100">Approche Pratique</h3>
+                    <p class="text-slate-300">Apprenez en faisant ! Nos cours sont axés sur des projets concrets pour une maîtrise rapide et efficace.</p>
+                </div>
+                <!-- Avantage 2 : Formateurs Experts -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="w-16 h-16 bg-accent-color rounded-full flex items-center justify-center mb-4 shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13.5m0-13.5c-4.142 0-7.5 3.133-7.5 7s3.358 7 7.5 7h.75c1.933 0 3.5 1.567 3.5 3.5s-1.567 3.5-3.5 3.5H12m0-13.5C16.142 6.253 19.5 9.386 19.5 13s-3.358 7-7.5 7H12"></path></svg>
+                    </div>
+                    <h3 class="font-title font-bold text-xl mb-2 text-slate-100">Formateur Expert</h3>
+                    <p class="text-slate-300">Bénéficiez de l'encadrement du professionnel expérimenté du développement web, passionné par la transmission de son savoir.</p>
+                </div>
+                <!-- Avantage 3 : Communauté Active -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="w-16 h-16 bg-accent-color rounded-full flex items-center justify-center mb-4 shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-1.012-8.755-2.745M9 18.25V21h6v-2.75m-3-12.5V3h-2v2.75m-3 6.5V11h8v1.75m-4 0v-2.75"></path></svg>
+                    </div>
+                    <h3 class="font-title font-bold text-xl mb-2 text-slate-100">Communauté Active</h3>
+                    <p class="text-slate-300">Rejoignez un réseau de passionnés pour échanger, collaborer sur des projets et grandir ensemble, même après la formation.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Témoignages -->
+        <section id="temoignages" class="py-20 lg:py-28 section-animate">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-title font-bold text-slate-100">Ce qu'ils disent de nous</h2>
+                <p class="text-lg text-slate-300 mt-2">Des retours d'expérience de nos anciens participants.</p>
+            </div>
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Témoignage 1 -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                    <img src="../images/emma.jpg" alt="Photo de profil de Emmanuel NGOY" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-accent-color">
+                    <p class="text-slate-300 italic mb-4">"Oui, la formation Young Expert a été un moment inoubliable et merci à toute l'équipe d'avoir consacré votre temps pour former la jeunesse et la tirer de l'ignorance. J'ai appris les bases du fonctionnement de l'ordinateur ensemble avec le Magistrat Arthur Yangambi à travers ce programme de formation en informatique. Nous sommes infiniment réconnaissants pour la bravoure et la remise des brevets à la fin de cette série de formation."</p>
+                    <p class="font-semibold text-slate-100">- Emmanuel NGOY, Developpeur</p>
+                </div>
+                <!-- Témoignage 2 -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                    <img src="../images/sn.jpg" alt="Photo de profil de Sarah NDUMBA" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-accent-color">
+                    <p class="text-slate-300 italic mb-4">"Avant Young Expert, le code me semblait inaccessible. Grâce à leur approche pédagogique (ils ont commencés sur les réseaux sociaux) et leurs formateurs patients, j'ai non seulement appris, mais j'ai aussi développé une vraie passion pour le développement web. Merci particulièrement au formateur David Wawina pour son soutient morale "</p>
+                    <p class="font-semibold text-slate-100">- Sarah NDUMBA, Designer Web Freelance</p>
+                </div>
+                <!-- Témoignage 3 -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                    <img src="../images/aa.jpg" alt="Photo de profil de Florent LISONGOMI" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-accent-color">
+                    <p class="text-slate-300 italic mb-4">"Dès ce jour, j'ai appris à vous respecter comme un aîné (David Wawina), un génie en informatique... Que Dieu vous assites dans tout ce que vous entreprenez. Merci encore !"</p>
+                    <p class="font-semibold text-slate-100">- Arthur YANGAMBI, Entrepreneur Tech et ancien étudiant à l'Université de Kisangani</p>
+                </div>
+                <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                    <img src="../images/flo.jpg" alt="Photo de profil de Florent LISONGOMI" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-accent-color">
+                    <p class="text-slate-300 italic mb-4">"Avant Young Expert, le code me semblait inaccessible. Grâce à leur approche pédagogique et leurs formateurs patients, j'ai non seulement appris, mais j'ai aussi développé une vraie passion pour le développement web"</p>
+                    <p class="font-semibold text-slate-100">- Florent LISONGOMI, Designer Web Freelance</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Conditions : Prérequis de participation -->
+        <section id="conditions" class="py-20 lg:py-28 section-animate">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-title font-bold mb-6 text-slate-100">Conditions de Participation</h2>
+                    <p class="text-slate-300 mb-8">Pour garantir une expérience d'apprentissage optimale pour tous, nous demandons quelques prérequis simples.</p>
+                    <div class="bg-red-900/50 border border-red-700 text-red-300 px-6 py-4 rounded-lg shadow-inner">
+                        <span class="font-bold">N.B :</span> Hâtez-vous car les places sont très limitées. Inscription avant le <span class="font-bold accent-color">04 Août 2025</span>.
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <!-- Condition 1 -->
+                    <div class="flex items-start gap-4 bg-[#1E4D59] p-6 rounded-lg border border-[#143A45] shadow-md">
+                        <svg class="w-7 h-7 accent-color flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <div><h4 class="font-semibold text-xl text-slate-100">Avoir un ordinateur portable</h4><p class="text-sm text-slate-300">Indispensable pour coder et suivre les exercices pratiques en temps réel.</p></div>
+                    </div>
+                    <!-- Condition 2 -->
+                    <div class="flex items-start gap-4 bg-[#1E4D59] p-6 rounded-lg border border-[#143A45] shadow-md">
+                        <svg class="w-7 h-7 accent-color flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <div><h4 class="font-semibold text-xl text-slate-100">Connaissances de base en informatique</h4><p class="text-sm text-slate-300">Savoir naviguer dans un système d'exploitation, gérer des fichiers et utiliser un navigateur web.</p></div>
+                    </div>
+                    <!-- Condition 3 -->
+                    <div class="flex items-start gap-4 bg-[#1E4D59] p-6 rounded-lg border border-[#143A45] shadow-md">
+                       <svg class="w-7 h-7 accent-color flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <div><h4 class="font-semibold text-xl text-slate-100">Compréhension du français</h4><p class="text-sm text-slate-300">La formation sera intégralement dispensée en français, tant à l'oral qu'à l'écrit.</p></div>
+                    </div>
+                     <!-- Condition 4 -->
+                    <div class="flex items-start gap-4 bg-[#1E4D59] p-6 rounded-lg border border-[#143A45] shadow-md">
+                       <svg class="w-7 h-7 accent-color flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <div><h4 class="font-semibold text-xl text-slate-100">Un cahier et un stylo</h4><p class="text-sm text-slate-300">Prendre des notes est essentiel pour consolider l'apprentissage et réviser efficacement.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Tarifs : Détails des coûts -->
+        <section id="prix" class="py-20 lg:py-28 section-animate">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-title font-bold text-slate-100">Investissez en Vous</h2>
+                <p class="text-lg text-slate-300 mt-2">Un tarif simple et transparent pour une compétence qui change la vie.</p>
+            </div>
+            <div class="max-w-3xl mx-auto grid md:grid-cols-2 gap-8">
+                <!-- Carte des frais d'inscription -->
+                <div class="bg-[#1E4D59] p-8 rounded-xl border-2 border-accent-color text-center shadow-2xl shadow-[#FF8C00]/10 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="font-title font-bold text-2xl mb-2 text-slate-100">Frais d'Inscription</h3>
+                    <p class="font-title font-black text-6xl accent-color mb-2">10$</p>
+                    <p class="text-slate-300">Pour réserver votre place. Ces frais sont non-remboursables et garantissent votre accès.</p>
+                </div>
+                <!-- Carte des frais de formation -->
+                 <div class="bg-[#1E4D59] p-8 rounded-xl border border-[#143A45] text-center transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="font-title font-bold text-2xl mb-2 text-slate-100">Frais de Formation</h3>
+                    <p class="font-title font-black text-6xl text-slate-100 mb-2">25$</p>
+                    <p class="text-slate-300">Prix total et unique pour la formation complète, sans frais cachés.</p>
+                </div>
+            </div>
+            <div class="mt-12 text-center text-slate-300">
+                <p>Un investissement minime pour une compétence à forte valeur ajoutée sur le marché du travail.</p>
+            </div>
+        </section>
+
+        <!-- Section FAQ : Questions fréquemment posées -->
+        <section id="faq" class="py-20 lg:py-28 section-animate">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-title font-bold text-slate-100">Questions Fréquemment Posées</h2>
+                <p class="text-lg text-slate-300 mt-2">Trouvez rapidement les réponses à vos interrogations.</p>
+            </div>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="bg-[#1E4D59] p-6 rounded-lg border border-[#143A45] shadow-md">
+                    <details class="group">
+                        <summary class="flex justify-between items-center font-semibold text-lg cursor-pointer text-slate-100 hover:text-white transition-colors">
+                            Quand et où se déroule la formation ?
+                            <span class="ml-2 transform group-open:rotate-180 transition-transform duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-300">La formation se tiendra à Kisangani et débutera le <span class="font-bold accent-color">04 Août 2025</span>. Les détails exacts du lieu et des horaires seront communiqués aux inscrits.</p>
+                    </details>
+                </div>
+                <!-- FAQ Item 2 -->
+                <div class="bg-[#1E4D59] p-6 rounded-lg border border-[#143A45] shadow-md">
+                    <details class="group">
+                        <summary class="flex justify-between items-center font-semibold text-lg cursor-pointer text-slate-100 hover:text-white transition-colors">
+                            Quel est le format de la formation ?
+                            <span class="ml-2 transform group-open:rotate-180 transition-transform duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-300">Il s'agit d'une formation intensive et pratique en présentiel, avec des sessions interactives, des exercices et des projets à réaliser en temps réel.</p>
+                    </details>
+                </div>
+                <!-- FAQ Item 3 -->
+                <div class="bg-[#1E4D59] p-6 rounded-lg border border-[#143A45] shadow-md">
+                    <details class="group">
+                        <summary class="flex justify-between items-center font-semibold text-lg cursor-pointer text-slate-100 hover:text-white transition-colors">
+                            Dois-je avoir des connaissances en programmation ?
+                            <span class="ml-2 transform group-open:rotate-180 transition-transform duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-300">Non, cette formation est conçue pour les débutants. Seules des connaissances de base en informatique (navigation, gestion de fichiers) sont requises.</p>
+                    </details>
+                </div>
+                <!-- FAQ Item 4 -->
+                <div class="bg-[#1E4D59] p-6 rounded-lg border border-[#143A45] shadow-md">
+                    <details class="group">
+                        <summary class="flex justify-between items-center font-semibold text-lg cursor-pointer text-slate-100 hover:text-white transition-colors">
+                            Y aura-t-il un certificat à la fin de la formation ?
+                            <span class="ml-2 transform group-open:rotate-180 transition-transform duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-300">Oui, tous les participants qui complètent la formation avec succès recevront un certificat de participation de Young Expert, attestant de leurs compétences acquises.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section d'appel à l'action final -->
+        <section class="py-20 lg:py-28 text-center section-animate">
+            <h2 class="text-4xl md:text-5xl font-title font-bold text-slate-100">Prêt à commencer votre aventure ?</h2>
+            <p class="text-lg text-slate-300 mt-4 max-w-2xl mx-auto">
+                Les places partent vite. Ne manquez pas cette opportunité de lancer votre carrière dans le développement web et de créer votre avenir.
+            </p>
+            <a href="https://wa.me/243840665620?text=Bonjour%2C%20je%20suis%20pr%C3%AAt%20%C3%A0%20m%27inscrire%20%C3%A0%20la%20formation%20Young%20Expert%20!" target="_blank" class="mt-10 btn-primary inline-block bg-accent-color text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg">
+                Réserver ma place maintenant
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Appel à l'action flottant (Sticky CTA) -->
+    <a href="https://wa.me/243840665620?text=Bonjour%2C%20je%20suis%20int%C3%A9ress%C3%A9(e)%29%20par%20la%20formation%20Young%20Expert%20et%27aimerais%20r%C3%A9server%20ma%20place.$" target="_blank" id="sticky-cta" class="btn-primary">
+        Réserver ma place !
+    </a>
+
+    <!-- Section Pied de page -->
+    <footer class="border-t border-[#143A45] mt-12">
+        <div class="container mx-auto px-4 sm:px-6 py-8 text-center text-slate-400 text-sm">
+            <p>© 2025 Young Expert. Tous droits réservés. Desing By David WAWINA.</p>
+            <p class="mt-2">Fait avec passion pour l'avenir du développement web.</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript pour la fonctionnalité du menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Bascule la visibilité du menu mobile au clic sur le bouton
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Cache le menu mobile lorsqu'un lien de navigation à l'intérieur est cliqué
+        // Cela assure que le menu se ferme après la navigation vers une section
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // JavaScript pour l'animation des sections au défilement (API Intersection Observer)
+        // Cela fait apparaître les sections en fondu et les fait glisser vers le haut lorsqu'elles deviennent visibles
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible'); // Ajoute la classe 'visible' pour déclencher l'animation
+                } else {
+                    // Optionnel : Supprime la classe 'visible' si vous voulez que l'animation se rejoue en défilant hors/dans la vue
+                    // entry.target.classList.remove('visible');
+                }
+            });
+        }, { 
+            threshold: 0.1, // Déclenche lorsque 10% de la section est visible
+            rootMargin: '0px 0px -50px 0px' // Ajuste le point de déclenchement (par exemple, déclenche 50px avant d'entrer en bas de la fenêtre)
+        });
+
+        // Observe tous les éléments avec la classe 'section-animate'
+        document.querySelectorAll('.section-animate').forEach(el => {
+            observer.observe(el);
+        });
+
+        // JavaScript pour le compte à rebours
+        const countdownDate = new Date("2025-08-04T00:00:00").getTime(); // Date cible : 4 août 2025, minuit
+
+        const x = setInterval(function() {
+            const now = new Date().getTime(); // Date et heure actuelles
+            const distance = countdownDate - now; // Distance entre maintenant et la date cible
+
+            // Calcul des jours, heures, minutes et secondes
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Affichage dans les éléments HTML
+            document.getElementById("days").innerHTML = String(days).padStart(2, '0');
+            document.getElementById("hours").innerHTML = String(hours).padStart(2, '0');
+            document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").innerHTML = String(seconds).padStart(2, '0');
+
+            // Si le compte à rebours est terminé
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown-timer").innerHTML = "<p class='text-2xl font-bold accent-color'>La formation a commencé !</p>";
+                document.getElementById("countdown-section").querySelector('p').innerHTML = "Il est encore temps de nous contacter pour la prochaine session !";
+            }
+        }, 1000); // Met à jour toutes les secondes
+
+        // JavaScript pour l'appel à l'action flottant (Sticky CTA)
+        const stickyCta = document.getElementById('sticky-cta');
+        const heroSection = document.getElementById('hero');
+
+        window.addEventListener('scroll', () => {
+            // Calcule la position du bas de la section hero
+            const heroBottom = heroSection.getBoundingClientRect().bottom;
+
+            // Si l'utilisateur a défilé au-delà de la section hero, affiche le CTA
+            if (window.scrollY > heroBottom) {
+                stickyCta.classList.add('show');
+            } else {
+                stickyCta.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
+
